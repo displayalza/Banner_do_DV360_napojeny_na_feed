@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="environment" content="gwd-dv360">
+  <meta name="viewport" content="width=300,height=600">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500&display=swap" rel="stylesheet">
+  <style type="text/css" id="gwd-text-style">
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+      }
+
+      .container {
+        position: relative;
+        height: 600px;
+        width: 300px;
+        background-color: white;
+        border: 1px solid #D6D6D6;
+      }
+
+      .logo {
+        width: 200px;
+        margin-top: 10px;
+        margin-left: calc(50% - 200px/2);
+      }
+
+      #titleProduktu {
+        font-size: 14px;
+        font-weight: 300;
+        text-align: center;
+      }
+
+      #obrazekProduktu {
+        margin: 0px auto 30px;
+        height: 260px;
+        width: 300px;
+        object-fit: contain;
+        z-index: -2;
+      }
+
+      #cenovka {
+        position: fixed;
+        top: 400px;
+        max-width: 110px;
+        min-width: 60px;
+        left: 170px;
+        height: auto;
+        font: bold 20px 'Poppins', sans-serif ;
+        height: auto;
+        font-kerning: none;
+        padding: 1px 10px;
+        background-color: #ffdb32;
+        border-radius: 6px;
+        z-index: 10;
+        transform: rotate(-10deg);
+        text-align: center;
+      }
+
+      .cta {
+        position: fixed;
+        width: 250px;
+        height: 130px;
+        left: 25px;
+        top: 450px;
+      }
+
+  </style>
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200italic,300,300italic,regular,italic,600,600italic,700,700italic,800,800italic,900,900italic" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+
+  <div class="container" id="container">
+      <p id="titleProduktu" crossorigin="anonymous"></p>
+      <img src="" alt="Product image" id="obrazekProduktu" crossorigin="anonymous">
+      <p id="cenovka" crossorigin="anonymous"></p>
+      <img src="/CTA_HU.png" alt="alzak-cta-hu" class="cta">
+  </div>
+
+<script type="text/javascript">
+
+  let fetchedUrl = "https://interchange.alza.cz/new/AlzaPower.xml";
+  let obrazekProduktu = document.getElementById("obrazekProduktu");
+  let titleProduktu = document.getElementById("titleProduktu");
+  let cenovka = document.getElementById("cenovka");
+
+  window.onload = function(){
+    const xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if(this.readyState == 4 && this.status == 200) {
+          let xml = xhttp.responseXML;
+          displayData(xml);
+        }
+    }
+    xhttp.open("GET", fetchedUrl, true);
+    xhttp.send();
+  }
+
+  function displayData(data){
+    let xmlTitleProduktu = data.getElementsByTagName("PRODUCTNAME")[0].childNodes[0].nodeValue;
+    titleProduktu.innerText = xmlTitleProduktu;
+    let xmlObrazekProduktu = data.getElementsByTagName("IMGURL")[0].childNodes[0].nodeValue;
+    obrazekProduktu.src = xmlObrazekProduktu;
+    let xmlCenovka = data.getElementsByTagName("PRICE_VAT")[0].childNodes[0].nodeValue;
+    cenovka.innerText = parseInt(xmlCenovka) + ",-";
+
+  }
+</script>
+
+</body>
+
+</html>
